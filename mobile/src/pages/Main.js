@@ -85,7 +85,7 @@ export default function Main({ navigation }) {
                                 <Text
                                     style={styles.bio}
                                     numberOfLines={3}
-                                >{user.avatar}</Text>
+                                >{user.bio}</Text>
                             </View>
                         </View>
                     ))
