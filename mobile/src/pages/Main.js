@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage';
 import { View, SafeAreaView, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import api from '../services/api';
@@ -27,7 +27,7 @@ export default function Main({ navigation }) {
         }
 
         loadUsers();
-    }, [id])
+    }, [id]);
 
     useEffect(() => {
         const socket = io('http://localhost:3333', {
@@ -35,6 +35,7 @@ export default function Main({ navigation }) {
         });
 
         socket.on('match', dev => {
+            console.log('DEU MATCH', dev);
             setMatchDev(dev);
         });
 
@@ -47,7 +48,7 @@ export default function Main({ navigation }) {
             headers: { user: id },
         })
 
-        setUsers(users.filter(rest));
+        setUsers(rest);
     }
 
     async function handleDislike(){
@@ -57,7 +58,7 @@ export default function Main({ navigation }) {
             headers: { user: id },
         })
 
-        setUsers(users.filter(rest));
+        setUsers(rest);
     }
 
     async function handleLogout() {
@@ -68,10 +69,10 @@ export default function Main({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity onPress={handleLogout}>
-                <Image styles={styles.logo} source={logo} />
+                <Image style={styles.logo} source={logo} />
             </TouchableOpacity>
-            <View styles={styles.cardsContainer}>
-                { users.length == 0
+            <View style={styles.cardsContainer}>
+                { users.length === 0
                 ? <Text style={styles.empty}>Acabou :(</Text>
                 : (
                     users.map((user, index) => (
@@ -103,8 +104,8 @@ export default function Main({ navigation }) {
             )}
             { matchDev && (
                 <View style={styles.matchContainer}>
-                    <Image style={styles.matchImage} source={itsamatch}/>
-                    <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }}/>
+                    <Image style={styles.matchImage} source={itsamatch} />
+                    <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }} />
                     <Text style={styles.matchName}>{matchDev.name}</Text>
                     <Text style={styles.matchBio}>{matchDev.bio}</Text>
                     <TouchableOpacity onPress={() => setMatchDev(null)}>
@@ -129,9 +130,7 @@ const styles = StyleSheet.create({
     },
 
     empty:{
-        marginBottom: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf: 'center',
         color: '#999',
         fontSize: 24,
         fontWeight: 'bold',
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
 
     avatar: {
         flex: 1,
-        maxHeight: 300,
+        height: 300,
     },
 
     footer: {
@@ -182,6 +181,7 @@ const styles = StyleSheet.create({
     },
 
     buttonsContainer: {
+        zIndex: 0,
         flexDirection: 'row',
         marginBottom: 30,
     },
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 9999,
     },
 
     matchImage: {
